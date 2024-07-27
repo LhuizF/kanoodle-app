@@ -1,13 +1,13 @@
-import { useState, FC } from 'react';
+import { FC } from 'react';
 
 interface DroppableAreaProps {
   handleDropItem: (x: ShapeItem, y: DropArea) => void;
-  number: number;
+  color: string;
   filled: boolean;
   position: DropArea;
 }
 
-const DroppableArea: FC<DroppableAreaProps> = ({ number, handleDropItem, filled, position }) => {
+const DroppableArea: FC<DroppableAreaProps> = ({ color, handleDropItem, filled, position }) => {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -24,7 +24,7 @@ const DroppableArea: FC<DroppableAreaProps> = ({ number, handleDropItem, filled,
     <div
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      style={{ backgroundColor: filled ? 'pink' : '' }}
+      style={{ backgroundColor: filled ? color : '' }}
       className='box'
     >
     </div>

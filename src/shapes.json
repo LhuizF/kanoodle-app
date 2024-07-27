@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "position": [2, 4, 5, 6, 7],
+    "color": "#C27BA0"
+  },
+  {
+    "id": 2,
+    "position": [0, 4, 8, 12, 13],
+    "color": "#04FBFF"
+  },
+  {
+    "id": 3,
+    "position": [0, 4, 8, 9, 13],
+    "color": "#00FD03"
+  },
+  {
+    "id": 4,
+    "position": [0, 1, 4],
+    "color": "#FFF2CC"
+  },
+  {
+    "id": 5,
+    "position": [1, 4, 5, 6, 9],
+    "color": "#D9D9D9"
+  },
+  {
+    "id": 6,
+    "position": [0, 1, 5, 8, 9],
+    "color": "#FFFF00"
+  },
+  {
+    "id": 7,
+    "position": [0, 1, 5, 9],
+    "color": "#FF9901"
+  },
+  {
+    "id": 8,
+    "position": [0, 1, 4, 5],
+    "color": "#B5D7A8"
+  },
+  {
+    "id": 9,
+    "position": [0, 1, 2, 3],
+    "color": "#9900FF"
+  },
+  {
+    "id": 10,
+    "position": [0, 4, 5, 9, 10],
+    "color": "#FF24FF"
+  },
+  {
+    "id": 11,
+    "position": [2, 6, 8, 9, 10],
+    "color": "#C9DAF8"
+  },
+  {
+    "id": 12,
+    "position": [0, 1, 4, 5, 9],
+    "color": "#CC2900"
+  }
+]

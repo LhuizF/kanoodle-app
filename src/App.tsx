@@ -3,29 +3,32 @@ import { useState, useEffect } from 'react';
 import DroppableItemArea from './components/DroppableItemArea';
 import Shape from './components/Shape';
 import { usePlay } from './hooks/usePlay';
+import shapes from './shapes.json';
 
-const totalItems = 66;
+const totalRows = 6;
 const totalColumns = 11;
 
-
-function App() {
-  const [matrix, seMatrix] = useState<Item[][]>(Array.from({ length: totalItems / totalColumns }, (_, r) => {
+const makeMatrix = (totalRows: number, totalColumns: number) => {
+  return Array.from({ length: totalRows - 1 }, (_, r) => {
     return Array.from({ length: totalColumns }, (_, c) => ({
       position: { row: r, column: c },
       value: r * totalColumns + c,
       filled: false,
+      color: 'transparent'
     }));
-  }));
+  });
+};
+
+function App() {
+  const [matrix, seMatrix] = useState<Block[][]>(makeMatrix(totalRows, totalColumns));
 
 
-  const { addNewMove, reverteMove, checkIfIsComplete } = usePlay();
+  const { addNewMove, reverteMove, checkIfIsComplete, resetAll } = usePlay();
 
   const handleDrop = (shapeItem: ShapeItem, dropAreaIndex: DropArea) => {
     const newMatrix = [...matrix];
     const startIndex = shapeItem.start;
     const shapeMatrix = shapeItem.matrix;
-
-    const totalRows = totalItems / totalColumns;
 
     const shapeTotalPoints = shapeMatrix.reduce((acc, row) => acc + row.filter(Boolean).length, 0);
 
@@ -59,8 +62,8 @@ function App() {
     });
 
     if (move.length !== shapeTotalPoints) return;
-
-    const matrixWithNewMove = addNewMove(move, newMatrix);
+    console.log('move ::', shapeItem.color);
+    const matrixWithNewMove = addNewMove({ numbers: move, color: shapeItem.color }, newMatrix);
 
     seMatrix(matrixWithNewMove);
   };
@@ -71,7 +74,13 @@ function App() {
   };
 
   useEffect(() => {
-   // console.log('win ::', checkIfIsComplete(matrix));
+    if (checkIfIsComplete(matrix)) {
+      setTimeout(() => {
+        alert('Parabéns');
+        seMatrix(makeMatrix(totalRows, totalColumns));
+        resetAll();
+      }, 500);
+    }
   }, [matrix]);
 
   return (
@@ -88,7 +97,7 @@ function App() {
             {rows.map((item, itemIndex) => (
               <DroppableItemArea
                 key={itemIndex}
-                number={item.value}
+                color={item.color}
                 filled={item.filled}
                 position={item.position}
                 handleDropItem={handleDrop}
@@ -99,7 +108,14 @@ function App() {
       </div>
 
       <div className='shape-container'>
-        <Shape />
+        {shapes.map(shape => (
+          <Shape
+            key={shape.id}
+            id={shape.id}
+            position={shape.position}
+            color={shape.color}
+          />
+        ))}
       </div>
     </main>
   );

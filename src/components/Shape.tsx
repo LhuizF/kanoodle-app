@@ -3,14 +3,15 @@ import { FC, useState } from 'react';
 const totalShapes = 16;
 const totalColumns = 4;
 
-const shapeItem = [5, 8, 9, 10, 11];
-
 interface ShapeProps {
+  id: number;
+  position: number[];
+  color: string;
 }
 
-const Shape: FC<ShapeProps> = () => {
+const Shape: FC<ShapeProps> = ({ id, position, color }) => {
   const matrix = Array.from({ length: totalShapes / totalColumns }, (_, i) => {
-    return Array.from({ length: totalColumns }, (_, j) => shapeItem.includes(i * totalColumns + j));
+    return Array.from({ length: totalColumns }, (_, j) => position.includes(i * totalColumns + j));
   });
 
   const [startIndex, setStartIndex] = useState<Position>();
@@ -21,6 +22,7 @@ const Shape: FC<ShapeProps> = () => {
     const data: ShapeItem = {
       matrix,
       start: startIndex,
+      color,
     };
 
     e.dataTransfer.setData('text/plain', JSON.stringify(data));
@@ -38,7 +40,7 @@ const Shape: FC<ShapeProps> = () => {
             <div
               key={rowColumn}
               onMouseDown={() => setStartIndex({ row: rowIndex, column: rowColumn })}
-              style={{ backgroundColor: item ? 'pink' : '' }}
+              style={{ backgroundColor: item ? color : '' }}
               className='box'
             />
           ))}

@@ -1,15 +1,21 @@
 import { useState } from "react";
 
-export const usePlay = () => {
-  const [moves, setMoves] = useState<number[][]>([]);
+interface Move {
+  numbers: number[];
+  color: string;
+}
 
-  const addNewMove = (move: number[], matrix: Item[][]) => {
+export const usePlay = () => {
+  const [moves, setMoves] = useState<Move[]>([]);
+
+  const addNewMove = (move: Move, matrix: Block[][]) => {
     const newMatrix = [...matrix];
 
     newMatrix.forEach((rows, rowIndex) => {
       rows.forEach((item, columnIndex) => {
-        if (move.includes(item.value)) {
+        if (move.numbers.includes(item.value)) {
           newMatrix[rowIndex][columnIndex].filled = true;
+          newMatrix[rowIndex][columnIndex].color = move.color;
         }
       });
     });
@@ -19,7 +25,7 @@ export const usePlay = () => {
     return matrix;
   };
 
-  const reverteMove = (matrix: Item[][]) => {
+  const reverteMove = (matrix: Block[][]) => {
     const lastMove = moves[moves.length - 1];
 
     if (!lastMove) return matrix;
@@ -28,8 +34,9 @@ export const usePlay = () => {
 
     newMatrix.forEach((rows, rowIndex) => {
       rows.forEach((item, columnIndex) => {
-        if (lastMove.includes(item.value)) {
+        if (lastMove.numbers.includes(item.value)) {
           newMatrix[rowIndex][columnIndex].filled = false;
+          newMatrix[rowIndex][columnIndex].color = '';
         }
       });
     });
@@ -43,9 +50,13 @@ export const usePlay = () => {
     return newMatrix;
   };
 
-  const checkIfIsComplete = (matrix: Item[][]) => {
+  const checkIfIsComplete = (matrix: Block[][]) => {
     return matrix.every((rows) => rows.every((item) => item.filled));
   };
 
-  return { addNewMove, reverteMove, checkIfIsComplete };
+  const resetAll = () => {
+    setMoves([]);
+  }
+
+  return { addNewMove, reverteMove, checkIfIsComplete, resetAll };
 };

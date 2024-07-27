@@ -1,12 +1,14 @@
 interface ShapeItem {
   matrix: boolean[][]
   start: Position
+  color: string
 }
 
-interface Item {
+interface Block {
   position: Position;
   value: number
   filled: boolean;
+  color: string;
 }
 
 interface DropArea {
@@ -14,7 +16,13 @@ interface DropArea {
   column: number
 }
 
-interface Position{
+interface Position {
   row: number
   column: number
+}
+
+interface Shape {
+  id: number
+  position: number[]
+  color: string
 }
