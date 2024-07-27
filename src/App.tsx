@@ -1,7 +1,8 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DroppableItemArea from './components/DroppableItemArea';
 import Shape from './components/Shape';
+import { usePlay } from './hooks/usePlay';
 
 const totalItems = 66;
 const totalColumns = 11;
@@ -17,6 +18,8 @@ function App() {
   }));
 
 
+  const { addNewMove, reverteMove, checkIfIsComplete } = usePlay();
+
   const handleDrop = (shapeItem: ShapeItem, dropAreaIndex: DropArea) => {
     const newMatrix = [...matrix];
     const startIndex = shapeItem.start;
@@ -26,7 +29,7 @@ function App() {
 
     const shapeTotalPoints = shapeMatrix.reduce((acc, row) => acc + row.filter(Boolean).length, 0);
 
-    const points: number[] = [];
+    const move: number[] = [];
 
     newMatrix.forEach((rows, rowIndex) => {
       if (rowIndex === dropAreaIndex.row) {
@@ -37,7 +40,7 @@ function App() {
                 if (shapeItem) {
                   const matrixRowIndex = dropAreaIndex.row + shapeRowIndex - startIndex.row;
                   const matrixColumnIndex = dropAreaIndex.column + shapeColumnIndex - startIndex.column;
-                  
+
                   if (
                     matrixRowIndex >= 0 &&
                     matrixColumnIndex >= 0 &&
@@ -45,9 +48,8 @@ function App() {
                     matrixColumnIndex < totalColumns &&
                     !newMatrix[matrixRowIndex][matrixColumnIndex].filled
                   ) {
-                    points.push(newMatrix[matrixRowIndex][matrixColumnIndex].value);
+                    move.push(newMatrix[matrixRowIndex][matrixColumnIndex].value);
                   }
-
                 }
               });
             });
@@ -56,21 +58,27 @@ function App() {
       }
     });
 
-    if (points.length !== shapeTotalPoints) return;
+    if (move.length !== shapeTotalPoints) return;
 
-    newMatrix.forEach((rows, rowIndex) => {
-      rows.forEach((item, columnIndex) => {
-        if (points.includes(item.value)) {
-          newMatrix[rowIndex][columnIndex].filled = true;
-        }
-      });
-    });
+    const matrixWithNewMove = addNewMove(move, newMatrix);
 
-    seMatrix(newMatrix);
+    seMatrix(matrixWithNewMove);
   };
+
+  const handleReverteMove = () => {
+    const matrixWithRevertedMove = reverteMove(matrix);
+    seMatrix(matrixWithRevertedMove);
+  };
+
+  useEffect(() => {
+   // console.log('win ::', checkIfIsComplete(matrix));
+  }, [matrix]);
 
   return (
     <main>
+      <nav>
+        <button onClick={handleReverteMove} >{'<'}</button>
+      </nav>
       <div>
         {matrix.map((rows, rowIndex) => (
           <div

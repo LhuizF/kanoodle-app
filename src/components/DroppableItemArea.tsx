@@ -8,39 +8,25 @@ interface DroppableAreaProps {
 }
 
 const DroppableArea: FC<DroppableAreaProps> = ({ number, handleDropItem, filled, position }) => {
-  const [isOver, setIsOver] = useState(false);
-
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    setIsOver(true);
     e.dataTransfer.dropEffect = 'move';
-  };
-
-  const handleDragLeave = () => {
-    setIsOver(false);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const data = e.dataTransfer.getData('text/plain');
-    if(!data) return;
-    setIsOver(false);
+    if (!data) return;
     handleDropItem(JSON.parse(data), position);
   };
 
   return (
     <div
       onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-
       onDrop={handleDrop}
-      style={{
-        backgroundColor: filled ? 'pink' : (isOver ? 'lightgreen' : ''),
-
-      }}
+      style={{ backgroundColor: filled ? 'pink' : '' }}
       className='box'
     >
-      {filled ? 'X' : number}
     </div>
   );
 };

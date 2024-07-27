@@ -33,3 +33,7 @@
 .row {
   display: flex;
 }
+
+.shape-box {
+  background-color: pink;
+}
