@@ -30,20 +30,6 @@
   padding: 10px;
 }
 
-.shape {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  background-color: #4e4e4e;
-  cursor: crosshair;
-}
-
-.shape div {
-  padding: 6px;
-  border: 1px solid red;
+.row {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
 }

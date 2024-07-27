@@ -1,12 +1,13 @@
 import { useState, FC } from 'react';
 
 interface DroppableAreaProps {
-  handleDropItem: (x: number, index: number) => void;
-  value: number
-  filled: boolean
+  handleDropItem: (x: ShapeItem, y: DropArea) => void;
+  number: number;
+  filled: boolean;
+  position: DropArea;
 }
 
-const DroppableArea: FC<DroppableAreaProps> = ({ value, handleDropItem, filled }) => {
+const DroppableArea: FC<DroppableAreaProps> = ({ number, handleDropItem, filled, position }) => {
   const [isOver, setIsOver] = useState(false);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -22,21 +23,24 @@ const DroppableArea: FC<DroppableAreaProps> = ({ value, handleDropItem, filled }
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const data = e.dataTransfer.getData('text/plain');
+    if(!data) return;
     setIsOver(false);
-    handleDropItem(Number(data), value);
+    handleDropItem(JSON.parse(data), position);
   };
 
   return (
     <div
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
+
       onDrop={handleDrop}
       style={{
-        backgroundColor: isOver ? 'lightgreen' : '',
+        backgroundColor: filled ? 'pink' : (isOver ? 'lightgreen' : ''),
+
       }}
       className='box'
     >
-      {filled ? 'X' : value}
+      {filled ? 'X' : number}
     </div>
   );
 };
