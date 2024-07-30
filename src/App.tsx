@@ -4,6 +4,7 @@ import DroppableItemArea from './components/DroppableItemArea';
 import Shape from './components/Shape';
 import { usePlay } from './hooks/usePlay';
 import shapes from './shapes.json';
+import { FaUndoAlt } from "react-icons/fa";
 
 const totalRows = 6;
 const totalColumns = 11;
@@ -22,8 +23,7 @@ const makeMatrix = (totalRows: number, totalColumns: number) => {
 function App() {
   const [matrix, seMatrix] = useState<Block[][]>(makeMatrix(totalRows, totalColumns));
 
-
-  const { addNewMove, reverteMove, checkIfIsComplete, resetAll } = usePlay();
+  const { addNewMove, reverteMove, checkIfIsComplete, resetAll, hasMoves } = usePlay();
 
   const handleDrop = (shapeItem: ShapeItem, dropAreaIndex: DropArea) => {
     const newMatrix = [...matrix];
@@ -36,7 +36,7 @@ function App() {
 
     newMatrix.forEach((rows, rowIndex) => {
       if (rowIndex === dropAreaIndex.row) {
-        rows.forEach((item, columnIndex) => {
+        rows.forEach((_, columnIndex) => {
           if (columnIndex === dropAreaIndex.column) {
             shapeMatrix.forEach((shapeRow, shapeRowIndex) => {
               shapeRow.forEach((shapeItem, shapeColumnIndex) => {
@@ -86,9 +86,15 @@ function App() {
   return (
     <main>
       <nav>
-        <button onClick={handleReverteMove} >{'<'}</button>
+        <button
+          onClick={handleReverteMove}
+          disabled={!hasMoves}
+          title='Desfazer'
+        >
+          <FaUndoAlt />
+        </button>
       </nav>
-      <div>
+      <div className='board'>
         {matrix.map((rows, rowIndex) => (
           <div
             key={rowIndex}

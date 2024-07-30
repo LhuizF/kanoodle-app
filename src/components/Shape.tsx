@@ -28,11 +28,12 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
     e.dataTransfer.setData('text/plain', JSON.stringify(data));
   };
 
-
   return (
     <div
+      key={id}
       draggable
       onDragStart={handleDragStart}
+      className='shape'
     >
       {matrix.map((rows, rowIndex) => (
         <div key={rowIndex} className='row'>
@@ -40,8 +41,8 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
             <div
               key={rowColumn}
               onMouseDown={() => setStartIndex({ row: rowIndex, column: rowColumn })}
+              className={item ? 'box' : 'box-empty'}
               style={{ backgroundColor: item ? color : '' }}
-              className='box'
             />
           ))}
         </div>

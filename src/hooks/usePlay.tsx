@@ -58,5 +58,7 @@ export const usePlay = () => {
     setMoves([]);
   }
 
-  return { addNewMove, reverteMove, checkIfIsComplete, resetAll };
+  const hasMoves = moves.length > 0;
+
+  return { addNewMove, reverteMove, checkIfIsComplete, resetAll, hasMoves };
 };
