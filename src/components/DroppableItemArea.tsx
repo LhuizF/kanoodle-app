@@ -16,7 +16,9 @@ const DroppableArea: FC<DroppableAreaProps> = ({ color, handleDropItem, filled, 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const data = e.dataTransfer.getData('text/plain');
-    if (!data) return;
+
+    if (!data.trim()) return;
+
     handleDropItem(JSON.parse(data), position);
   };
 

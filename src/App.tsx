@@ -49,7 +49,7 @@ function App() {
                     matrixColumnIndex >= 0 &&
                     matrixRowIndex < totalRows &&
                     matrixColumnIndex < totalColumns &&
-                    !newMatrix[matrixRowIndex][matrixColumnIndex].filled
+                    (newMatrix[matrixRowIndex] && !newMatrix[matrixRowIndex][matrixColumnIndex].filled)
                   ) {
                     move.push(newMatrix[matrixRowIndex][matrixColumnIndex].value);
                   }
