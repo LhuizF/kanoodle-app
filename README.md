@@ -33,3 +33,4 @@ export default {
 [] ajustar layout
 [] remover peça ao jogar
 [] adicionar hover no antes do drop
+[] gira peças

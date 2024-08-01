@@ -5,10 +5,25 @@
   text-align: center;
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.btn-undo {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.btn-undo:hover:not(:disabled) {
+  border-color: #ff1d1d;
+}
+
+.btn-undo:focus,
+.btn-undo:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
 .grid {
@@ -32,10 +47,11 @@ main {
 .shape-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 32px;
   justify-content: center;
   align-items: center;
   padding: 10px;
+  margin-top: 30px;
 }
 
 .row {
@@ -59,8 +75,48 @@ main {
   padding: 2px;
   border: 1px solid transparent;
   transition: all 0.3s;
+  position: relative;
 }
 
 .shape:hover {
   transform: scale(1.1);
+  border: 1px solid #ff1d1d;
+}
+
+.shape-controls {
+  position: absolute;
+  top: -28px;
+  right: 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-shape {
+  background-color: transparent;
+  border: none;
+  background-color: #383838;
+  padding: 4px;
+  height: 26px;
+  width: 26px;
+  border-radius: 100%;
+  cursor: pointer;
+
+  display: none;
+}
+
+.btn-shape:hover {
+  background-color: #ff1d1d;
+}
+
+.shape:hover .btn-shape {
+  display: block;
+}
+
+.shape:active {
+  border: none;
+}
+
+.shape:active .btn-shape {
+  /* display: none; */
 }

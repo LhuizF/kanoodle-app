@@ -87,6 +87,7 @@ function App() {
     <main>
       <nav>
         <button
+          className='btn-undo'
           onClick={handleReverteMove}
           disabled={!hasMoves}
           title='Desfazer'

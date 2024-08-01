@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { ImSpinner11 } from "react-icons/im";
 
 const totalShapes = 16;
 const totalColumns = 4;
@@ -14,18 +15,36 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
     return Array.from({ length: totalColumns }, (_, j) => position.includes(i * totalColumns + j));
   });
 
+  const [shapeMatrix, setShape] = useState<boolean[][]>(matrix);
+
   const [startIndex, setStartIndex] = useState<Position>();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     if (!startIndex) return;
 
     const data: ShapeItem = {
-      matrix,
+      matrix: shapeMatrix,
       start: startIndex,
       color,
     };
 
     e.dataTransfer.setData('text/plain', JSON.stringify(data));
+  };
+
+  const rotationShape = () => {
+    const rotatedMatrix: boolean[][] = [];
+
+    shapeMatrix.forEach((row, indexRow) => {
+      row.forEach((c, index) => {
+        if (!rotatedMatrix[index]) {
+          rotatedMatrix[index] = [];
+        }
+        rotatedMatrix[index][row.length - 1 - indexRow] = c;
+
+      });
+    });
+
+    setShape(rotatedMatrix);
   };
 
   return (
@@ -35,7 +54,7 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
       onDragStart={handleDragStart}
       className='shape'
     >
-      {matrix.map((rows, rowIndex) => (
+      {shapeMatrix.map((rows, rowIndex) => (
         <div key={rowIndex} className='row'>
           {rows.map((item, rowColumn) => (
             <div
@@ -47,6 +66,12 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
           ))}
         </div>
       ))}
+
+      <div className='shape-controls'>
+        <button className='btn-shape' onClick={rotationShape}>
+          <ImSpinner11 />
+        </button>
+      </div>
     </div>
   );
 };
