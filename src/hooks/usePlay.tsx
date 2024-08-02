@@ -1,10 +1,5 @@
 import { useState } from "react";
 
-interface Move {
-  numbers: number[];
-  color: string;
-}
-
 export const usePlay = () => {
   const [moves, setMoves] = useState<Move[]>([]);
 

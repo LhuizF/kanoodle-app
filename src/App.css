@@ -80,7 +80,6 @@
 
 .shape:hover {
   transform: scale(1.1);
-  border: 1px solid #ff1d1d;
 }
 
 .shape-controls {

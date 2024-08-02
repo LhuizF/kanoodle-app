@@ -1,8 +1,9 @@
 import { FC, useState } from 'react';
 import { ImSpinner11 } from "react-icons/im";
 
-const totalShapes = 16;
-const totalColumns = 4;
+enum ShapeAreaEnum {
+  TOTAL = 4
+}
 
 interface ShapeProps {
   id: number;
@@ -11,8 +12,8 @@ interface ShapeProps {
 }
 
 const Shape: FC<ShapeProps> = ({ id, position, color }) => {
-  const matrix = Array.from({ length: totalShapes / totalColumns }, (_, i) => {
-    return Array.from({ length: totalColumns }, (_, j) => position.includes(i * totalColumns + j));
+  const matrix = Array.from({ length: ShapeAreaEnum.TOTAL }, (_, i) => {
+    return Array.from({ length: ShapeAreaEnum.TOTAL }, (_, j) => position.includes(i * ShapeAreaEnum.TOTAL + j));
   });
 
   const [shapeMatrix, setShape] = useState<boolean[][]>(matrix);

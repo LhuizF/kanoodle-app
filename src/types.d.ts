@@ -26,3 +26,8 @@ interface Shape {
   position: number[]
   color: string
 }
+
+interface Move {
+  numbers: number[];
+  color: string;
+}
