@@ -6,7 +6,7 @@ import { usePlay } from './hooks/usePlay';
 import shapes from './shapes.json';
 import { TotalArea } from './Enums/TotalArea';
 import { useDrop } from './hooks/useDrop';
-import { MdUndo, MdRestartAlt } from "react-icons/md";
+import Nav from './components/Nav';
 
 const makeMatrix = () => {
   return Array.from({ length: TotalArea.ROW - 1 }, (_, r) => {
@@ -58,34 +58,19 @@ function App() {
     seMatrix(makeMatrix());
     setShapesUsed([]);
     resetAllMoves();
-  }
+  };
 
   return (
     <main>
-      <nav>
-        <button
-          className='btn btn-restart'
-          onClick={restartGame}
-          disabled={!hasMoves}
-          title='Reiniciar'
-        >
-          <MdRestartAlt />
-        </button>
-        <button
-          className='btn btn-undo'
-          onClick={handleReverteMove}
-          disabled={!hasMoves}
-          title='Desfazer'
-        >
-          <MdUndo />
-        </button>
-      </nav>
+      <Nav
+        restartGame={restartGame}
+        handleReverteMove={handleReverteMove}
+        hasMoves={hasMoves}
+      />
+
       <div className='board'>
         {matrix.map((rows, rowIndex) => (
-          <div
-            key={rowIndex}
-            className='row'
-          >
+          <div key={rowIndex} className='row'>
             {rows.map((item, itemIndex) => (
               <DroppableItemArea
                 key={itemIndex}
@@ -106,6 +91,7 @@ function App() {
             <div key={`fake-shape-${index}`} className='fake-shape' />
         )}
       </div>
+
     </main>
   );
 }

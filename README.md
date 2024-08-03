@@ -37,3 +37,4 @@ export default {
 [x] girar peças na vertical e horizontal
 [] remover peças já jogado
 [] Comemoração ao completar
+[] Print quando faltar uma única peça
