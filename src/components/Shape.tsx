@@ -24,6 +24,7 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
     if (!startIndex) return;
 
     const data: ShapeItem = {
+      id,
       matrix: shapeMatrix,
       start: startIndex,
       color,

@@ -8,7 +8,6 @@ import { FaUndoAlt } from "react-icons/fa";
 import { TotalArea } from './Enums/TotalArea';
 import { useDrop } from './hooks/useDrop';
 
-
 const makeMatrix = () => {
   return Array.from({ length: TotalArea.ROW - 1 }, (_, r) => {
     return Array.from({ length: TotalArea.COLUMN }, (_, c) => ({
@@ -23,6 +22,8 @@ const makeMatrix = () => {
 function App() {
   const [matrix, seMatrix] = useState<Block[][]>(makeMatrix());
 
+  const [shapesUsed, setShapesUsed] = useState<number[]>([]);
+
   const { addNewMove, reverteMove, checkIfIsComplete, resetAll, hasMoves } = usePlay();
 
   const { getNewMove } = useDrop();
@@ -30,6 +31,11 @@ function App() {
   const handleReverteMove = () => {
     const matrixWithRevertedMove = reverteMove(matrix);
     seMatrix(matrixWithRevertedMove);
+    const newShapesUsed = shapesUsed.pop();
+
+    if (newShapesUsed) {
+      setShapesUsed([...shapesUsed]);
+    }
   };
 
   const handleDrop = (shapeItem: ShapeItem, dropAreaIndex: DropArea) => {
@@ -37,7 +43,8 @@ function App() {
 
     if (!newMove) return;
 
-    seMatrix([...addNewMove(newMove, matrix)]);
+    seMatrix(addNewMove(newMove, matrix));
+    setShapesUsed((prev) => [...prev, shapeItem.id]);
   };
 
   useEffect(() => {
@@ -49,7 +56,7 @@ function App() {
         resetAll();
       }, 500);
     }
-  }, [matrix]);
+  }, [shapesUsed]);
 
   return (
     <main>
@@ -83,14 +90,11 @@ function App() {
       </div>
 
       <div className='shape-container'>
-        {shapes.map(shape => (
-          <Shape
-            key={shape.id}
-            id={shape.id}
-            position={shape.position}
-            color={shape.color}
-          />
-        ))}
+        {shapes.map((shape, index) =>
+          !shapesUsed.includes(shape.id) ?
+            <Shape key={shape.id} id={shape.id} position={shape.position} color={shape.color} /> :
+            <div key={`fake-shape-${index}`} className='fake-shape'/>
+        )}
       </div>
     </main>
   );

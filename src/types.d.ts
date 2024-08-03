@@ -1,30 +1,31 @@
 interface ShapeItem {
-  matrix: boolean[][]
-  start: Position
-  color: string
+  id: number;
+  matrix: boolean[][];
+  start: Position;
+  color: string;
 }
 
 interface Block {
   position: Position;
-  value: number
+  value: number;
   filled: boolean;
   color: string;
 }
 
 interface DropArea {
-  row: number
-  column: number
+  row: number;
+  column: number;
 }
 
 interface Position {
-  row: number
-  column: number
+  row: number;
+  column: number;
 }
 
 interface Shape {
-  id: number
-  position: number[]
-  color: string
+  id: number;
+  position: number[];
+  color: string;
 }
 
 interface Move {

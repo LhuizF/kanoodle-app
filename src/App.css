@@ -112,10 +112,12 @@
   display: block;
 }
 
-.shape:active {
-  border: none;
-}
-
 .shape:active .btn-shape {
   /* display: none; */
+}
+
+.fake-shape {
+  width: 182px;
+  height: 182px;
+  box-sizing: border-box;
 }

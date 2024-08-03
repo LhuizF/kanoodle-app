@@ -30,7 +30,9 @@ export default {
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
 
 
-[] ajustar layout
-[] remover peça ao jogar
+[x] ajustar layout
+[x] remover peça ao jogar
 [] adicionar hover no antes do drop
-[] gira peças
+[x] gira peças 90 graus
+[] girar peças na vertical e horizontal
+[] remover peças já jogado
