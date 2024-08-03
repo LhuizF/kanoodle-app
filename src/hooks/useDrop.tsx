@@ -46,6 +46,7 @@ export const useDrop = () => {
     if (move.length !== shapeTotalPoints) return;
 
     return {
+      shapeId: shapeItem.id,
       numbers: move,
       color: shapeItem.color,
     }

@@ -29,6 +29,7 @@ interface Shape {
 }
 
 interface Move {
+  shapeId: number;
   numbers: number[];
   color: string;
 }
