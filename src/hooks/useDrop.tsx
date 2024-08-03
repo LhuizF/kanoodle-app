@@ -3,12 +3,12 @@ import { TotalArea } from "../Enums/TotalArea";
 interface HandleDropProps {
   matrix: Block[][];
   shapeItem: ShapeItem;
-  dropAreaIndex: DropArea;
+  positionDropped: Position;
 }
 
 export const useDrop = () => {
 
-  const getNewMove = ({ matrix, dropAreaIndex, shapeItem }: HandleDropProps): Move | void => {
+  const getNewMove = ({ matrix, positionDropped, shapeItem }: HandleDropProps): Move | void => {
     const startIndex = shapeItem.start;
     const shapeMatrix = shapeItem.matrix;
 
@@ -17,14 +17,14 @@ export const useDrop = () => {
     const move: number[] = [];
 
     matrix.forEach((rows, rowIndex) => {
-      if (rowIndex === dropAreaIndex.row) {
+      if (rowIndex === positionDropped.row) {
         rows.forEach((_, columnIndex) => {
-          if (columnIndex === dropAreaIndex.column) {
+          if (columnIndex === positionDropped.column) {
             shapeMatrix.forEach((shapeRow, shapeRowIndex) => {
               shapeRow.forEach((shapeItem, shapeColumnIndex) => {
                 if (shapeItem) {
-                  const matrixRowIndex = dropAreaIndex.row + shapeRowIndex - startIndex.row;
-                  const matrixColumnIndex = dropAreaIndex.column + shapeColumnIndex - startIndex.column;
+                  const matrixRowIndex = positionDropped.row + shapeRowIndex - startIndex.row;
+                  const matrixColumnIndex = positionDropped.column + shapeColumnIndex - startIndex.column;
 
                   if (
                     matrixRowIndex >= 0 &&

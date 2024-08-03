@@ -9,8 +9,8 @@ function App() {
   const { matrix, restartGame, addMove, reverteMove, shapes, hasMoves } = useGameContext();
   const { getNewMove } = useDrop();
 
-  const handleDrop = (shapeItem: ShapeItem, dropAreaIndex: DropArea) => {
-    const newMove = getNewMove({ matrix, shapeItem, dropAreaIndex });
+  const handleDrop = (shapeItem: ShapeItem, positionDropped: Position) => {
+    const newMove = getNewMove({ matrix, shapeItem, positionDropped });
 
     if (!newMove) return;
 
@@ -25,21 +25,7 @@ function App() {
         hasMoves={hasMoves}
       />
 
-      <div className='board'>
-        {matrix.map((rows, rowIndex) => (
-          <div key={rowIndex} className='row'>
-            {rows.map((item, itemIndex) => (
-              <DroppableItemArea
-                key={itemIndex}
-                color={item.color}
-                filled={item.filled}
-                position={item.position}
-                handleDropItem={handleDrop}
-              />
-            ))}
-          </div>
-        ))}
-      </div>
+      <DroppableItemArea handleDropItem={handleDrop} />
 
       <div className='shape-container'>
         {shapes.map((shape, index) =>

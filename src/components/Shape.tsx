@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { ImSpinner11 } from "react-icons/im";
 import { PiFlipHorizontalFill, PiFlipVerticalFill } from "react-icons/pi";
 import { useShapeTransform } from '../hooks/useShapeTransform';
+import { useGameContext } from '../context/GameContext';
 
 enum ShapeAreaEnum {
   TOTAL = 4
@@ -21,6 +22,8 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
   const [shapeMatrix, setShape] = useState<boolean[][]>(matrix);
   const [startIndex, setStartIndex] = useState<Position>();
 
+  const { setCurrentShape } = useGameContext();
+
   const { rotationNinetyDeg, flipHorizontally, flipVertically } = useShapeTransform();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
@@ -32,6 +35,8 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
       start: startIndex,
       color,
     };
+
+    setCurrentShape(data);
 
     e.dataTransfer.setData('text/plain', JSON.stringify(data));
   };
@@ -60,7 +65,7 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
         <div key={rowIndex} className='row'>
           {rows.map((item, rowColumn) => (
             <div
-              key={rowColumn}
+              key={`${rowColumn}-${rowIndex}`}
               onMouseDown={() => setStartIndex({ row: rowIndex, column: rowColumn })}
               className={item ? 'box' : 'box-empty'}
               style={{ backgroundColor: item ? color : '' }}

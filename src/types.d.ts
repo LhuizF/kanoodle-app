@@ -12,11 +12,6 @@ interface Block {
   color: string;
 }
 
-interface DropArea {
-  row: number;
-  column: number;
-}
-
 interface Position {
   row: number;
   column: number;

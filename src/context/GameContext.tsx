@@ -15,6 +15,8 @@ interface GameContextProps {
   hasMoves: boolean;
   restartGame: () => void;
   shapes: ShapesUsed[];
+  setCurrentShape: (shape: ShapeItem | null) => void;
+  currentShape: ShapeItem | null;
 }
 
 interface ShapesUsed extends Shape {
@@ -36,6 +38,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [matrix, setMatrix] = useState<Block[][]>(makeMatrix());
   const [moves, setMoves] = useState<Move[]>([]);
   const [shapes, setShapes] = useState<ShapesUsed[]>(shapesJson);
+
+  const [currentShape, setCurrentShape] = useState<ShapeItem | null>(null);
 
   const addMove = (move: Move) => {
     const newMatrix = [...matrix];
@@ -113,8 +117,18 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   }, [moves]);
 
+
   return (
-    <GameContext.Provider value={{ matrix, restartGame, addMove, reverteMove, shapes, hasMoves }}>
+    <GameContext.Provider value={{
+      matrix,
+      restartGame,
+      addMove,
+      reverteMove,
+      shapes,
+      hasMoves,
+      setCurrentShape,
+      currentShape
+    }}>
       {children}
     </GameContext.Provider>
   );
