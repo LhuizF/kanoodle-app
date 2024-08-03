@@ -1,5 +1,7 @@
 import { FC, useState } from 'react';
 import { ImSpinner11 } from "react-icons/im";
+import { PiFlipHorizontalFill, PiFlipVerticalFill } from "react-icons/pi";
+import { useShapeTransform } from '../hooks/useShapeTransform';
 
 enum ShapeAreaEnum {
   TOTAL = 4
@@ -17,8 +19,9 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
   });
 
   const [shapeMatrix, setShape] = useState<boolean[][]>(matrix);
-
   const [startIndex, setStartIndex] = useState<Position>();
+
+  const { rotationNinetyDeg, flipHorizontally, flipVertically } = useShapeTransform();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     if (!startIndex) return;
@@ -34,20 +37,17 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
   };
 
   const rotationShape = () => {
-    const rotatedMatrix: boolean[][] = [];
-
-    shapeMatrix.forEach((row, indexRow) => {
-      row.forEach((c, index) => {
-        if (!rotatedMatrix[index]) {
-          rotatedMatrix[index] = [];
-        }
-        rotatedMatrix[index][row.length - 1 - indexRow] = c;
-
-      });
-    });
-
-    setShape(rotatedMatrix);
+    setShape(rotationNinetyDeg(shapeMatrix));
   };
+
+  const flipHorizontallyShape = () => {
+    setShape(flipHorizontally(shapeMatrix));
+  };
+
+  const flipVerticallyShape = () => {
+    setShape(flipVertically(shapeMatrix));
+  };
+
 
   return (
     <div
@@ -72,6 +72,12 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
       <div className='shape-controls'>
         <button className='btn-shape' onClick={rotationShape}>
           <ImSpinner11 />
+        </button>
+        <button className='btn-shape' onClick={flipHorizontallyShape}>
+          <PiFlipHorizontalFill />
+        </button>
+        <button className='btn-shape' onClick={flipVerticallyShape}>
+          <PiFlipVerticalFill />
         </button>
       </div>
     </div>

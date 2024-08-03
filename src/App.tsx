@@ -21,11 +21,9 @@ const makeMatrix = () => {
 
 function App() {
   const [matrix, seMatrix] = useState<Block[][]>(makeMatrix());
-
   const [shapesUsed, setShapesUsed] = useState<number[]>([]);
 
   const { addNewMove, reverteMove, checkIfIsComplete, resetAll, hasMoves } = usePlay();
-
   const { getNewMove } = useDrop();
 
   const handleReverteMove = () => {

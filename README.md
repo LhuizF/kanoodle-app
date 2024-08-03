@@ -34,5 +34,6 @@ export default {
 [x] remover peça ao jogar
 [] adicionar hover no antes do drop
 [x] gira peças 90 graus
-[] girar peças na vertical e horizontal
+[x] girar peças na vertical e horizontal
 [] remover peças já jogado
+[] Comemoração ao completar
