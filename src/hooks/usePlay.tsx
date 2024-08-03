@@ -49,11 +49,11 @@ export const usePlay = () => {
     return matrix.every((rows) => rows.every((item) => item.filled));
   };
 
-  const resetAll = () => {
+  const resetAllMoves = () => {
     setMoves([]);
   }
 
   const hasMoves = moves.length > 0;
 
-  return { addNewMove, reverteMove, checkIfIsComplete, resetAll, hasMoves };
+  return { addNewMove, reverteMove, checkIfIsComplete, resetAllMoves, hasMoves };
 };

@@ -41,6 +41,11 @@ h1 {
   line-height: 1.1;
 }
 
+nav {
+  display: flex;
+  gap: 16px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

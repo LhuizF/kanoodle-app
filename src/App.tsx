@@ -4,9 +4,9 @@ import DroppableItemArea from './components/DroppableItemArea';
 import Shape from './components/Shape';
 import { usePlay } from './hooks/usePlay';
 import shapes from './shapes.json';
-import { FaUndoAlt } from "react-icons/fa";
 import { TotalArea } from './Enums/TotalArea';
 import { useDrop } from './hooks/useDrop';
+import { MdUndo, MdRestartAlt } from "react-icons/md";
 
 const makeMatrix = () => {
   return Array.from({ length: TotalArea.ROW - 1 }, (_, r) => {
@@ -23,7 +23,7 @@ function App() {
   const [matrix, seMatrix] = useState<Block[][]>(makeMatrix());
   const [shapesUsed, setShapesUsed] = useState<number[]>([]);
 
-  const { addNewMove, reverteMove, checkIfIsComplete, resetAll, hasMoves } = usePlay();
+  const { addNewMove, reverteMove, checkIfIsComplete, resetAllMoves, hasMoves } = usePlay();
   const { getNewMove } = useDrop();
 
   const handleReverteMove = () => {
@@ -46,26 +46,38 @@ function App() {
   };
 
   useEffect(() => {
-    console.log('matrix');
     if (checkIfIsComplete(matrix)) {
       setTimeout(() => {
         alert('Parabéns');
-        seMatrix(makeMatrix());
-        resetAll();
+        restartGame();
       }, 500);
     }
   }, [shapesUsed]);
+
+  const restartGame = () => {
+    seMatrix(makeMatrix());
+    setShapesUsed([]);
+    resetAllMoves();
+  }
 
   return (
     <main>
       <nav>
         <button
-          className='btn-undo'
+          className='btn btn-restart'
+          onClick={restartGame}
+          disabled={!hasMoves}
+          title='Reiniciar'
+        >
+          <MdRestartAlt />
+        </button>
+        <button
+          className='btn btn-undo'
           onClick={handleReverteMove}
           disabled={!hasMoves}
           title='Desfazer'
         >
-          <FaUndoAlt />
+          <MdUndo />
         </button>
       </nav>
       <div className='board'>
@@ -91,7 +103,7 @@ function App() {
         {shapes.map((shape, index) =>
           !shapesUsed.includes(shape.id) ?
             <Shape key={shape.id} id={shape.id} position={shape.position} color={shape.color} /> :
-            <div key={`fake-shape-${index}`} className='fake-shape'/>
+            <div key={`fake-shape-${index}`} className='fake-shape' />
         )}
       </div>
     </main>
@@ -99,4 +111,3 @@ function App() {
 }
 
 export default App;
-
