@@ -3,6 +3,8 @@ interface ShapeItem {
   matrix: boolean[][];
   start: Position;
   color: string;
+
+  values: number[];
 }
 
 interface Block {
@@ -10,6 +12,8 @@ interface Block {
   value: number;
   filled: boolean;
   color: string;
+  shapeId: number | null;
+  shapeValues: number[] | null;
 }
 
 interface Position {

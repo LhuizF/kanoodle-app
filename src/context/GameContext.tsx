@@ -10,13 +10,14 @@ interface GameProviderProps {
 
 interface GameContextProps {
   matrix: Block[][];
-  addMove: (move: Move) => void;
+  addMove: (move: Move, shapeItem: ShapeItem,) => void;
   reverteMove: () => void;
   hasMoves: boolean;
   restartGame: () => void;
   shapes: ShapesUsed[];
   setCurrentShape: (shape: ShapeItem | null) => void;
   currentShape: ShapeItem | null;
+  removeMoveByShapeId: (id: number) => void;
 }
 
 interface ShapesUsed extends Shape {
@@ -29,7 +30,9 @@ const makeMatrix = () => {
       position: { row: r, column: c },
       value: r * TotalArea.COLUMN + c,
       filled: false,
-      color: 'transparent'
+      color: '',
+      shapeId: null,
+      shapeValues: null
     }));
   });
 };
@@ -41,14 +44,31 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   const [currentShape, setCurrentShape] = useState<ShapeItem | null>(null);
 
-  const addMove = (move: Move) => {
+  const addMove = (move: Move, shapeItem: ShapeItem,) => {
     const newMatrix = [...matrix];
+
+    const oldShape = shapes.find((shape) => shape.id === shapeItem.id);
+
+    if (oldShape && oldShape.used) {
+      newMatrix.forEach((rows, rowIndex) => {
+        rows.forEach((item, columnIndex) => {
+          if (item.shapeId === shapeItem.id) {
+            newMatrix[rowIndex][columnIndex].filled = false;
+            newMatrix[rowIndex][columnIndex].color = '';
+            newMatrix[rowIndex][columnIndex].shapeId = null;
+            newMatrix[rowIndex][columnIndex].shapeValues = null;
+          }
+        });
+      });
+    }
 
     newMatrix.forEach((rows, rowIndex) => {
       rows.forEach((item, columnIndex) => {
         if (move.numbers.includes(item.value)) {
           newMatrix[rowIndex][columnIndex].filled = true;
           newMatrix[rowIndex][columnIndex].color = move.color;
+          newMatrix[rowIndex][columnIndex].shapeId = move.shapeId;
+          newMatrix[rowIndex][columnIndex].shapeValues = shapeItem.values;
         }
       });
     });
@@ -57,6 +77,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setMatrix(newMatrix);
   };
 
+  //TODO: usar o metodo de remover move por id
   const reverteMove = () => {
     const lastMove = moves[moves.length - 1];
 
@@ -69,6 +90,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         if (lastMove.numbers.includes(item.value)) {
           newMatrix[rowIndex][columnIndex].filled = false;
           newMatrix[rowIndex][columnIndex].color = '';
+          newMatrix[rowIndex][columnIndex].shapeId = null;
+          newMatrix[rowIndex][columnIndex].shapeValues = null;
         }
       });
     });
@@ -91,6 +114,26 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const restartGame = () => {
     setMatrix(makeMatrix());
     setMoves([]);
+  };
+
+  const removeMoveByShapeId = (id: number) => {
+    const newMatrix = [...matrix];
+
+    newMatrix.forEach((rows, rowIndex) => {
+      rows.forEach((item, columnIndex) => {
+        if (item.shapeId === id) {
+          newMatrix[rowIndex][columnIndex].filled = false;
+          newMatrix[rowIndex][columnIndex].color = '';
+          newMatrix[rowIndex][columnIndex].shapeId = null;
+          newMatrix[rowIndex][columnIndex].shapeValues = null;
+        }
+      });
+    });
+
+    const newMoves = moves.filter((move) => move.shapeId !== id);
+    setMoves(newMoves);
+
+    setMatrix(newMatrix);
   };
 
   useEffect(() => {
@@ -117,6 +160,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   }, [moves]);
 
+  // useEffect(() => {
+  //   console.log('matrix', matrix);
+  // }, [matrix]);
+
 
   return (
     <GameContext.Provider value={{
@@ -127,7 +174,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       shapes,
       hasMoves,
       setCurrentShape,
-      currentShape
+      currentShape,
+      removeMoveByShapeId
     }}>
       {children}
     </GameContext.Provider>
