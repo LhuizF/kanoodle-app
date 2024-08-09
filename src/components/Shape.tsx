@@ -3,10 +3,7 @@ import { ImSpinner11 } from "react-icons/im";
 import { PiFlipHorizontalFill, PiFlipVerticalFill } from "react-icons/pi";
 import { useShapeTransform } from '../hooks/useShapeTransform';
 import { useGameContext } from '../context/GameContext';
-
-enum ShapeAreaEnum {
-  TOTAL = 4
-}
+import { makeShapeMatrix } from '../libs/utils';
 
 interface ShapeProps {
   id: number;
@@ -15,11 +12,7 @@ interface ShapeProps {
 }
 
 const Shape: FC<ShapeProps> = ({ id, position, color }) => {
-  const matrix = Array.from({ length: ShapeAreaEnum.TOTAL }, (_, i) => {
-    return Array.from({ length: ShapeAreaEnum.TOTAL }, (_, j) => position.includes(i * ShapeAreaEnum.TOTAL + j));
-  });
-
-  const [shapeMatrix, setShape] = useState<boolean[][]>(matrix);
+  const [shapeMatrix, setShape] = useState<boolean[][]>(makeShapeMatrix(position));
   const [startIndex, setStartIndex] = useState<Position>();
 
   const { setCurrentShape } = useGameContext();
@@ -34,6 +27,7 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
       matrix: shapeMatrix,
       start: startIndex,
       color,
+      values: position
     };
 
     setCurrentShape(data);
