@@ -9,7 +9,7 @@ function App() {
   const { matrix, restartGame, addMove, reverteMove, shapes, hasMoves } = useGameContext();
   const { getNewMove } = useDrop();
 
-  const handleDrop = (shapeItem: ShapeItem, positionDropped: Position,) => {
+  const handleDrop = (shapeItem: ShapeItem, positionDropped: Position) => {
     const newMove = getNewMove({ matrix, shapeItem, positionDropped });
 
     if (!newMove) return;

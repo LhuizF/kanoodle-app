@@ -36,7 +36,7 @@ export default {
 [x] gira peças 90 graus
 [x] girar peças na vertical e horizontal
 [x] remover peças já jogado
-[] Posicionamento correto do click quando mover peça já posicionada
+[x] Posicionamento correto do click quando mover peça já posicionada
 [] Arrastar toda a peça depois de ser posicionada
 [] Voltar com a peça para o tabuleiro
 [] Comemoração ao completar

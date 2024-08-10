@@ -1,9 +1,9 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ImSpinner11 } from "react-icons/im";
 import { PiFlipHorizontalFill, PiFlipVerticalFill } from "react-icons/pi";
 import { useShapeTransform } from '../hooks/useShapeTransform';
 import { useGameContext } from '../context/GameContext';
-import { makeShapeMatrix, makeShapeValues } from '../libs/utils';
+import { formatShapeForBoolean, makeShapeMatrix, makeShapeValues } from '../libs/utils';
 
 interface ShapeProps {
   id: number;
@@ -12,7 +12,7 @@ interface ShapeProps {
 }
 
 const Shape: FC<ShapeProps> = ({ id, position, color }) => {
-  const [shapeMatrix, setShape] = useState<boolean[][]>(makeShapeMatrix(position));
+  const [shapeMatrix, setShape] = useState<BlockShapeValue[][]>(makeShapeMatrix(id, position));
   const [startIndex, setStartIndex] = useState<Position>();
 
   const { setCurrentShape } = useGameContext();
@@ -27,7 +27,7 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
       matrix: shapeMatrix,
       start: startIndex,
       color,
-      values: makeShapeValues(shapeMatrix)
+      values: makeShapeValues(shapeMatrix),
     };
 
     setCurrentShape(data);
@@ -47,7 +47,6 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
     setShape(flipVertically(shapeMatrix));
   };
 
-
   return (
     <div
       key={id}
@@ -60,9 +59,9 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
           {rows.map((item, rowColumn) => (
             <div
               key={`${rowColumn}-${rowIndex}`}
-              onMouseDown={() => setStartIndex({ row: rowIndex, column: rowColumn })}
-              className={item ? 'box' : 'box-empty'}
-              style={{ backgroundColor: item ? color : '' }}
+              onMouseDown={() => setStartIndex({ row: item.position.row, column: item.position.column })}
+              className={item.value ? 'box' : 'box-empty'}
+              style={{ backgroundColor: item.value ? color : '' }}
             />
           ))}
         </div>

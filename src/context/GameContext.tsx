@@ -32,7 +32,8 @@ const makeMatrix = () => {
       filled: false,
       color: '',
       shapeId: null,
-      shapeValues: null
+      shapeValues: null,
+      shapePosition: null,
     }));
   });
 };
@@ -57,18 +58,22 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
             newMatrix[rowIndex][columnIndex].color = '';
             newMatrix[rowIndex][columnIndex].shapeId = null;
             newMatrix[rowIndex][columnIndex].shapeValues = null;
+            newMatrix[rowIndex][columnIndex].shapePosition = null;
           }
         });
       });
     }
 
+    const moveNumbers = move.numbers.map((item) => item.value);
+
     newMatrix.forEach((rows, rowIndex) => {
       rows.forEach((item, columnIndex) => {
-        if (move.numbers.includes(item.value)) {
+        if (moveNumbers.includes(item.value)) {
           newMatrix[rowIndex][columnIndex].filled = true;
           newMatrix[rowIndex][columnIndex].color = move.color;
           newMatrix[rowIndex][columnIndex].shapeId = move.shapeId;
           newMatrix[rowIndex][columnIndex].shapeValues = shapeItem.values;
+          newMatrix[rowIndex][columnIndex].shapePosition = move.numbers.find((number) => number.value === item.value)?.position || null;
         }
       });
     });
@@ -84,10 +89,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     if (!lastMove) return matrix;
 
     const newMatrix = [...matrix];
-
+    const moveNumbers = lastMove.numbers.map((item) => item.value);
     newMatrix.forEach((rows, rowIndex) => {
       rows.forEach((item, columnIndex) => {
-        if (lastMove.numbers.includes(item.value)) {
+        if (moveNumbers.includes(item.value)) {
           newMatrix[rowIndex][columnIndex].filled = false;
           newMatrix[rowIndex][columnIndex].color = '';
           newMatrix[rowIndex][columnIndex].shapeId = null;
