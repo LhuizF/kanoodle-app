@@ -1,9 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { ImSpinner11 } from "react-icons/im";
 import { PiFlipHorizontalFill, PiFlipVerticalFill } from "react-icons/pi";
 import { useShapeTransform } from '../hooks/useShapeTransform';
 import { useGameContext } from '../context/GameContext';
-import { formatShapeForBoolean, makeShapeMatrix, makeShapeValues } from '../libs/utils';
+import {  makeShapeMatrix, makeShapeValues } from '../libs/utils';
 
 interface ShapeProps {
   id: number;

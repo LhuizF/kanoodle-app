@@ -165,11 +165,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   }, [moves]);
 
-  // useEffect(() => {
-  //   console.log('matrix', matrix);
-  // }, [matrix]);
-
-
   return (
     <GameContext.Provider value={{
       matrix,

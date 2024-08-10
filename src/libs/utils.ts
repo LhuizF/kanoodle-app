@@ -22,7 +22,3 @@ export const makeShapeValues = (matrix: BlockShapeValue[][]): number[] => {
     return array;
   }, [] as number[]);
 };
-
-export const formatShapeForBoolean = (blocks: BlockShapeValue[][]): boolean[][] => {
-  return blocks.map(row => row.map(item => item.value));
-}
