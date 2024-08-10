@@ -1,10 +1,16 @@
 interface ShapeItem {
   id: number;
-  matrix: boolean[][];
+  matrix: BlockShapeValue[][];
   start: Position;
   color: string;
 
   values: number[];
+}
+
+interface BlockShapeValue {
+  id: string;
+  value: boolean;
+  position: Position;
 }
 
 interface Block {
@@ -14,6 +20,8 @@ interface Block {
   color: string;
   shapeId: number | null;
   shapeValues: number[] | null;
+
+  shapePosition: Position | null;
 }
 
 interface Position {
@@ -29,6 +37,6 @@ interface Shape {
 
 interface Move {
   shapeId: number;
-  numbers: number[];
+  numbers: { value: number, position: { row: number, column: number; }}[];
   color: string;
 }

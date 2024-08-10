@@ -2,14 +2,12 @@ import { FC, useState } from 'react';
 import { useGameContext } from '../context/GameContext';
 import { useDrop } from '../hooks/useDrop';
 import { makeShapeMatrix } from '../libs/utils';
-
 interface DroppableAreaProps {
-  handleDropItem: (shapeItem: ShapeItem, positionDropped: Position, isUpdateMove?: boolean) => void;
+  handleDropItem: (shapeItem: ShapeItem, positionDropped: Position) => void;
 }
 
 const DroppableArea: FC<DroppableAreaProps> = ({ handleDropItem }) => {
   const [preview, setPreview] = useState<number[]>([]);
-
   const { matrix, currentShape, setCurrentShape } = useGameContext();
   const { getNewMove } = useDrop();
 
@@ -22,7 +20,8 @@ const DroppableArea: FC<DroppableAreaProps> = ({ handleDropItem }) => {
 
 
     if (!newMove) return;
-    setPreview(newMove.numbers);
+    const moveName = newMove.numbers.map((item) => item.value);
+    setPreview(moveName);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, position: Position) => {
@@ -31,20 +30,20 @@ const DroppableArea: FC<DroppableAreaProps> = ({ handleDropItem }) => {
 
     if (!data.trim()) return;
 
-    console.log('aqui', data);
-
     handleDropItem(JSON.parse(data), position);
     setPreview([]);
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, block: Block) => {
-    if (!block.shapeValues || !block.shapeValues) return;
+    if (!block.shapeValues || !block.shapeValues || !block.shapeId || !block.shapePosition) return;
+
+    const shapeMatrix = makeShapeMatrix(block.shapeId, block.shapeValues);
 
     const data: ShapeItem = {
-      id: block.shapeId || 0,
+      id: block.shapeId,
       color: block.color,
-      matrix: makeShapeMatrix(block.shapeValues),
-      start: { row: 0, column: 0 },
+      matrix: shapeMatrix,
+      start: block.shapePosition,
       values: block.shapeValues
     };
 
@@ -59,6 +58,7 @@ const DroppableArea: FC<DroppableAreaProps> = ({ handleDropItem }) => {
         <div className='row' key={`row-${rowIndex}`} >
           {rows.map((item, itemIndex) => (
             <div
+              id={`item-${rowIndex}-${itemIndex}`}
               key={`item-${rowIndex}-${itemIndex}`}
               onDragOver={(e) => handleDragOver(e, item.position)}
               onDrop={(e) => handleDrop(e, item.position)}
@@ -66,7 +66,7 @@ const DroppableArea: FC<DroppableAreaProps> = ({ handleDropItem }) => {
               className='box'
               style={{ backgroundColor: item.filled ? item.color : preview.includes(item.value) ? '#838383' : '' }}
               draggable={item.filled}
-              onDragStart={(e) => item.filled && handleDragStart(e, item, )}
+              onDragStart={(e) => item.filled && handleDragStart(e, item)}
             />
           ))}
         </div>

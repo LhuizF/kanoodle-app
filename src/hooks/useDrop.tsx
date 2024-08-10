@@ -12,17 +12,18 @@ export const useDrop = () => {
     const startIndex = shapeItem.start;
     const shapeMatrix = shapeItem.matrix;
 
-    const shapeTotalPoints = shapeMatrix.reduce((acc, row) => acc + row.filter(Boolean).length, 0);
+    const shapeTotalPoints = shapeMatrix.reduce((acc, row) => acc + row.map(r => r.value).filter(Boolean).length, 0);
 
-    const move: number[] = [];
+    const move: { value: number, position: { row: number, column: number; }; }[] = [];
 
     matrix.forEach((rows, rowIndex) => {
       if (rowIndex === positionDropped.row) {
         rows.forEach((_, columnIndex) => {
           if (columnIndex === positionDropped.column) {
             shapeMatrix.forEach((shapeRow, shapeRowIndex) => {
-              shapeRow.forEach((shapeItem, shapeColumnIndex) => {
-                if (shapeItem) {
+              shapeRow.forEach((blockShapeItem, shapeColumnIndex) => {
+                if (blockShapeItem.value) {
+
                   const matrixRowIndex = positionDropped.row + shapeRowIndex - startIndex.row;
                   const matrixColumnIndex = positionDropped.column + shapeColumnIndex - startIndex.column;
 
@@ -33,7 +34,10 @@ export const useDrop = () => {
                     matrixColumnIndex < TotalArea.COLUMN &&
                     (matrix[matrixRowIndex] && !matrix[matrixRowIndex][matrixColumnIndex].filled)
                   ) {
-                    move.push(matrix[matrixRowIndex][matrixColumnIndex].value);
+                    move.push({
+                      value: matrix[matrixRowIndex][matrixColumnIndex].value,
+                      position: blockShapeItem.position,
+                    });
                   }
                 }
               });
@@ -49,7 +53,7 @@ export const useDrop = () => {
       shapeId: shapeItem.id,
       numbers: move,
       color: shapeItem.color,
-    }
+    };
   };
 
   return { getNewMove };

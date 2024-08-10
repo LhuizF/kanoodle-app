@@ -6,20 +6,15 @@ import { useGameContext } from './context/GameContext';
 import { useDrop } from './hooks/useDrop';
 
 function App() {
-  const { matrix, restartGame, addMove, reverteMove, shapes, hasMoves, removeMoveByShapeId } = useGameContext();
+  const { matrix, restartGame, addMove, reverteMove, shapes, hasMoves } = useGameContext();
   const { getNewMove } = useDrop();
 
-  const handleDrop = (shapeItem: ShapeItem, positionDropped: Position, isUpdateMove?: boolean) => {
+  const handleDrop = (shapeItem: ShapeItem, positionDropped: Position) => {
     const newMove = getNewMove({ matrix, shapeItem, positionDropped });
 
     if (!newMove) return;
 
     addMove(newMove, shapeItem);
-    console.log('newMove');
-
-    if (isUpdateMove) {
-      removeMoveByShapeId(shapeItem.id);
-    }
   };
 
   return (
