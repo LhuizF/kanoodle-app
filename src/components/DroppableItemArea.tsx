@@ -4,12 +4,11 @@ import { useDrop } from '../hooks/useDrop';
 import { makeShapeMatrix } from '../libs/utils';
 
 interface DroppableAreaProps {
-  handleDropItem: (shapeItem: ShapeItem, positionDropped: Position, isUpdateMove?: boolean) => void;
+  handleDropItem: (shapeItem: ShapeItem, positionDropped: Position) => void;
 }
 
 const DroppableArea: FC<DroppableAreaProps> = ({ handleDropItem }) => {
   const [preview, setPreview] = useState<number[]>([]);
-
   const { matrix, currentShape, setCurrentShape } = useGameContext();
   const { getNewMove } = useDrop();
 
@@ -31,20 +30,18 @@ const DroppableArea: FC<DroppableAreaProps> = ({ handleDropItem }) => {
 
     if (!data.trim()) return;
 
-    console.log('aqui', data);
-
     handleDropItem(JSON.parse(data), position);
     setPreview([]);
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, block: Block) => {
-    if (!block.shapeValues || !block.shapeValues) return;
+    if (!block.shapeValues || !block.shapeValues || !block.shapeId) return;
 
     const data: ShapeItem = {
-      id: block.shapeId || 0,
+      id: block.shapeId,
       color: block.color,
       matrix: makeShapeMatrix(block.shapeValues),
-      start: { row: 0, column: 0 },
+      start: { row: 0, column: 0 }, //FIXME: pegar a posição de click em relação ao shape total (4x4)
       values: block.shapeValues
     };
 

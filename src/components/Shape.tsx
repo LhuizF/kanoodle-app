@@ -3,7 +3,7 @@ import { ImSpinner11 } from "react-icons/im";
 import { PiFlipHorizontalFill, PiFlipVerticalFill } from "react-icons/pi";
 import { useShapeTransform } from '../hooks/useShapeTransform';
 import { useGameContext } from '../context/GameContext';
-import { makeShapeMatrix } from '../libs/utils';
+import { makeShapeMatrix, makeShapeValues } from '../libs/utils';
 
 interface ShapeProps {
   id: number;
@@ -27,7 +27,7 @@ const Shape: FC<ShapeProps> = ({ id, position, color }) => {
       matrix: shapeMatrix,
       start: startIndex,
       color,
-      values: position
+      values: makeShapeValues(shapeMatrix)
     };
 
     setCurrentShape(data);
